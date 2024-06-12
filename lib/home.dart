@@ -1,11 +1,9 @@
-// home.dart
-
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 import 'app_screen.dart';
+import 'dart:html' as html;
 
 class HomePage extends StatefulWidget {
   @override
@@ -66,9 +64,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
+    try {
+      // Open the URL using html.window.open
+      html.window.open(url, '_blank');
+    } catch (e) {
+      // Handle error
       throw 'Could not launch $url';
     }
   }
