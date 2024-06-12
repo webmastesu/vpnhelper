@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'catshow.dart'; // Import CatShowPage
+import 'splash_screen.dart'; // Import the SplashScreen
 import 'package:intl/intl.dart'; // Import to format the time
 
 void main() {
@@ -11,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'VPN HELPER',
+      title: 'CatbBook',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: SplashScreen(), // Use the SplashScreen as the initial screen
     );
   }
 }
@@ -90,6 +91,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage('lib/assets/icons/icon.png'),
+              ),
+              SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
