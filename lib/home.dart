@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildSettingsScreen() {
     return Center(
-      child: Text('Settings Screen', style: TextStyle(fontSize: 24)),
+      child: Text('အိပ်ငိုက်နေပီ နားပီနော် :3', style: TextStyle(fontSize: 24)),
     );
   }
 
