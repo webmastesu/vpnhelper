@@ -11,11 +11,14 @@ class AppScreen extends StatefulWidget {
 
 class _AppScreenState extends State<AppScreen> {
   List<dynamic> apps = [];
+  List<dynamic> filteredApps = [];
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     fetchAppData();
+    _searchController.addListener(_filterApps);
   }
 
   Future<void> fetchAppData() async {
@@ -28,6 +31,7 @@ class _AppScreenState extends State<AppScreen> {
       final data = json.decode(response.body);
       setState(() {
         apps = data['apps'];
+        filteredApps = apps;
       });
     } else {
       throw Exception('Failed to load app data');
@@ -40,6 +44,16 @@ class _AppScreenState extends State<AppScreen> {
       decodedData = utf8.decode(base64Decode(decodedData));
     }
     return decodedData;
+  }
+
+  void _filterApps() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      filteredApps = apps.where((app) {
+        final appName = app['name'].toLowerCase();
+        return appName.contains(query);
+      }).toList();
+    });
   }
 
   void _showDownloadDialog(Map<String, dynamic> downloads) {
@@ -77,9 +91,6 @@ class _AppScreenState extends State<AppScreen> {
     );
   }
 
-
-
-
   Widget _buildDownloadButton(String iconName, String downloadUrl) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -104,7 +115,6 @@ class _AppScreenState extends State<AppScreen> {
     );
   }
 
-
   void _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -114,52 +124,92 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('App Page'),
       ),
-      body: apps.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-        itemCount: apps.length,
-        itemBuilder: (context, index) {
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            margin: EdgeInsets.all(10),
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  ClipOval(
-                    child: Image.network(
-                      apps[index]['logo'],
-                      height: 60,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Flexible(
-                    child: Text(
-                      apps[index]['name'],
-                      style: TextStyle(fontSize: 20),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                  Spacer(),
-                  ElevatedButton(
-                    onPressed: () =>
-                        _showDownloadDialog(apps[index]['downloads']),
-                    child: Text('Download'),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: filteredApps.isEmpty
+                ? Center(child: CircularProgressIndicator())
+                : ListView.builder(
+              itemCount: filteredApps.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  margin: EdgeInsets.all(10),
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ClipOval(
+                          child: Image.network(
+                            filteredApps[index]['logo'],
+                            height: 60,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: Text(
+                            filteredApps[index]['name'],
+                            style: TextStyle(fontSize: 20),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                        Spacer(),
+                        ElevatedButton(
+                          onPressed: () =>
+                              _showDownloadDialog(filteredApps[index]['downloads']),
+                          child: Text('Download'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
