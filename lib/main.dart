@@ -1,7 +1,6 @@
-// main.dart
-
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'catshow.dart'; // Import CatShowPage
 import 'package:intl/intl.dart'; // Import to format the time
 
 void main() {
@@ -43,6 +42,11 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else if (_passwordController.text == '12345') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => CatShowPage()),
         );
       } else {
         _showErrorDialog('မိမိဖုန်းရဲ့ နာရီမှ မိနစ်ကိုထည့်ပါ');
