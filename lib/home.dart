@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'app_screen.dart';
 import 'dart:html' as html;
 
@@ -65,13 +66,24 @@ class _HomePageState extends State<HomePage> {
 
   void _launchURL(String url) async {
     try {
-      // Open the URL using html.window.open
-      html.window.open(url, '_blank');
+      // Check if the URL starts with "ss://" protocol
+      if (url.startsWith('ss://')) {
+        // URL with "ss://" protocol, open in the new tab using HTML window
+        await html.window.open(url, '_blank');
+      } else {
+        // URL without "ss://" protocol, launch using the default URL launcher
+        if (await canLaunch(url)) {
+          await launch(url);
+        } else {
+          throw 'Could not launch $url';
+        }
+      }
     } catch (e) {
       // Handle error
       throw 'Could not launch $url';
     }
   }
+
 
   @override
   void dispose() {
