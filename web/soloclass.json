@@ -1,0 +1,48 @@
+[
+  {
+    "id": "12345",
+    "title": "Boarding",
+    "poster_image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo5A1t2MkdYoMzAJPSM2lKbs4-AYWVt7V20Cjmmll6608LyYX1hiETIpBVm4jq6xwVaQM&usqp=CAU",
+    "slider_image": "https://i.pinimg.com/736x/0e/70/7b/0e707ba9cd7612d142b7d2e16d7038a9.jpg",
+    "cover_image": "https://i.pinimg.com/736x/0e/70/7b/0e707ba9cd7612d142b7d2e16d7038a9.jpg",
+    "review": "This is a sample review text for users to read.",
+    "status": "ongoing",
+    "vip": false,
+    "next_id": "12346",
+    "genres": ["Action", "Adventure"],
+    "author": "Author Name 1",
+    "episodes": [
+      {
+        "episode": "EP 1",
+        "content": "https://dance.jellyvenus.com/file/Jellyserver/2024/04/meX7qJIj.mp4"
+      },
+      {
+        "episode": "EP 2",
+        "content": "https://i.pinimg.com/736x/0e/70/7b/0e707ba9cd7612d142b7d2e16d7038a9.jpg"
+      }
+    ]
+  },
+  {
+    "id": "12346",
+    "title": "Example Title 2",
+    "poster_image": "url_to_poster_image_2.jpg",
+    "slider_image": "url_to_slider_image_2.jpg",
+    "cover_image": "url_to_cover_image_2.jpg",
+    "review": "This is another sample review text for users to read.",
+    "status": "complete",
+    "vip": false,
+    "next_id": "12347",
+    "genres": ["Drama", "Romance"],
+    "author": "Author Name 2",
+    "episodes": [
+      {
+        "episode": "EP 1",
+        "content": "Content data for episode 1."
+      },
+      {
+        "episode": "EP 2",
+        "content": "Content data for episode 2."
+      }
+    ]
+  }
+]
